@@ -1,23 +1,6 @@
-# Tiny Tapeout project information
-project:
-  title: "Tiny8 autonomous CPU with external SPI instruction fetch"
-  author: "Luis Javier"
-  discord: ""
-  description: "8-bit autonomous CPU that fetches 16-bit instructions from external SPI memory and outputs results on uo[7:0]."
-  language: "Verilog"
-  clock_hz: 50000000
-  tiles: "1x1"
-  top_module: "tt_um_tiny8_risclike"
-
-  source_files:
-    - "alu8.v"
-    - "tiny8_cpu.v"
-    - "tiny8_spi_fetch.v"
-    - "tt_um_tiny8_risclike.v"
-
 pinout:
-  ui[0]: ""
-  ui[1]: ""
+  ui[0]: "DBG show uio_in on uo_out"
+  ui[1]: "DBG show {ui_in[7:1], ena} on uo_out"
   ui[2]: ""
   ui[3]: ""
   ui[4]: ""
@@ -42,5 +25,3 @@ pinout:
   uio[5]: ""
   uio[6]: ""
   uio[7]: ""
-
-yaml_version: 6
