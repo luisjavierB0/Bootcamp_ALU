@@ -76,3 +76,28 @@ For real operation:
 - an external SPI instruction source is required
 - optionally, a microcontroller can emulate program memory
 - a slow external/project clock is recommended for easy visual observation
+
+
+## Operating modes
+
+The top-level wrapper includes two debug modes in addition to the normal CPU execution mode.
+
+### Normal mode
+- `ui_in[1:0] = 2'b00`
+- `uo_out[7:0]` shows the CPU output register (`port_out`)
+- this is the intended operating mode for autonomous execution from external SPI instruction memory
+
+### Debug mode 1
+- `ui_in[0] = 1`
+- `uo_out[7:0] = uio_in[7:0]`
+- this mode is used to verify bidirectional input connectivity at the chip boundary
+
+### Debug mode 2
+- `ui_in[0] = 0`
+- `ui_in[1] = 1`
+- `uo_out[7:0] = {ui_in[7:1], ena}`
+- this mode is used to verify dedicated input connectivity and enable signal visibility
+
+If both `ui_in[0]` and `ui_in[1]` are set, debug mode 1 has priority.
+
+For normal CPU operation, `ui_in` should be kept at `8'h00`.
