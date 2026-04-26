@@ -25,7 +25,7 @@ module tt_um_tiny8_risclike (
     wire spi_mosi;
     wire spi_miso;
 
-    // Entrada SPI real
+    // SPI input real
     assign spi_miso = uio_in[3];
 
     tiny8_cpu cpu_i (
@@ -53,24 +53,29 @@ module tt_um_tiny8_risclike (
         .spi_miso (spi_miso)
     );
 
-    // Salidas paralelas del procesador
-    assign uo_out = port_out;
+    // ---------
+    // Output mux:
+    // ui_in[0] = debug mode: show uio_in on uo_out
+    // ui_in[1] = debug mode: show {ui_in[7:1], ena} on uo_out
+    // otherwise normal CPU output
+    // ---------
+    wire [7:0] dbg_uio = uio_in;
+    wire [7:0] dbg_ui  = {ui_in[7:1], ena};
 
-    // Mantener TODOS los puertos de entrada vivos para que no desaparezcan en LEF.
-    // Esto no cambia el comportamiento externo porque uio_oe[7:3] permanece en 0.
-    (* keep *) wire [16:0] preserved_inputs = {ena, ui_in, uio_in};
-    (* keep *) wire dummy_inputs_used = ^preserved_inputs;
+    assign uo_out = ui_in[0] ? dbg_uio :
+                    ui_in[1] ? dbg_ui  :
+                               port_out;
 
-    // Pines bidireccionales:
-    // uio[0] = CS_n   (salida)
-    // uio[1] = SCK    (salida)
-    // uio[2] = MOSI   (salida)
-    // uio[3] = MISO   (entrada)
-    // uio[7:4] no usados como salida visible
+    // Bidirectional pins:
+    // uio[0] = CS_n   (output)
+    // uio[1] = SCK    (output)
+    // uio[2] = MOSI   (output)
+    // uio[3] = MISO   (input)
+    // uio[7:4] unused as outputs
     assign uio_out[0] = spi_cs_n;
     assign uio_out[1] = spi_sck;
     assign uio_out[2] = spi_mosi;
-    assign uio_out[7:3] = {5{dummy_inputs_used}};
+    assign uio_out[7:3] = 5'b00000;
 
     assign uio_oe[0] = 1'b1;
     assign uio_oe[1] = 1'b1;
