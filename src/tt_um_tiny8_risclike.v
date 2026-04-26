@@ -65,15 +65,15 @@ module tt_um_tiny8_risclike (
     assign uio_out[0] = spi_cs_n;
     assign uio_out[1] = spi_sck;
     assign uio_out[2] = spi_mosi;
-    assign uio_out[7:3] = 5'b00000;
+
+// Mantener todos los puertos de entrada vivos para que aparezcan en LEF.
+// uio_oe[7:3] sigue en 0, así que estos bits no se manejan hacia fuera.
+    (* keep *) wire dummy_inputs_used = ^{ena, ui_in, uio_in};
+
+    assign uio_out[7:3] = {5{dummy_inputs_used}};
 
     assign uio_oe[0] = 1'b1;
     assign uio_oe[1] = 1'b1;
     assign uio_oe[2] = 1'b1;
     assign uio_oe[7:3] = 5'b00000;
-
-    // Entradas no usadas: ui_in[7:0] y uio_in[7:4]
-    // Se conectan a una red dummy para evitar warnings.
-    wire _unused = &{1'b0, ena, ui_in, uio_in[7:4]};
-
 endmodule
