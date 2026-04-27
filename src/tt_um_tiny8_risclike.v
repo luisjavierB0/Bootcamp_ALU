@@ -19,13 +19,11 @@ module tt_um_tiny8_risclike (
 
     wire [7:0]  port_out;
 
-    // SPI maestro del chip
     wire spi_cs_n;
     wire spi_sck;
     wire spi_mosi;
     wire spi_miso;
 
-    // SPI input real
     assign spi_miso = uio_in[3];
 
     tiny8_cpu cpu_i (
@@ -53,12 +51,7 @@ module tt_um_tiny8_risclike (
         .spi_miso (spi_miso)
     );
 
-    // ---------
-    // Output mux:
-    // ui_in[0] = debug mode: show uio_in on uo_out
-    // ui_in[1] = debug mode: show {ui_in[7:1], ena} on uo_out
-    // otherwise normal CPU output
-    // ---------
+    // debug modes to keep all inputs physically meaningful
     wire [7:0] dbg_uio = uio_in;
     wire [7:0] dbg_ui  = {ui_in[7:1], ena};
 
@@ -66,12 +59,6 @@ module tt_um_tiny8_risclike (
                     ui_in[1] ? dbg_ui  :
                                port_out;
 
-    // Bidirectional pins:
-    // uio[0] = CS_n   (output)
-    // uio[1] = SCK    (output)
-    // uio[2] = MOSI   (output)
-    // uio[3] = MISO   (input)
-    // uio[7:4] unused as outputs
     assign uio_out[0] = spi_cs_n;
     assign uio_out[1] = spi_sck;
     assign uio_out[2] = spi_mosi;
