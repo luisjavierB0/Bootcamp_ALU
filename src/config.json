@@ -1,5 +1,5 @@
 {
-  "//": "Tiny Tapeout project config for 160x100 test",
+  "//": "Tiny Tapeout project config for 160x100 with conservative IO pin geometry",
   "PL_TARGET_DENSITY_PCT": 60,
   "CLOCK_PERIOD": 20,
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
@@ -25,8 +25,8 @@
 
   "GRT_ALLOW_CONGESTION": 1,
 
-  "FP_IO_HLENGTH": 2,
-  "FP_IO_VLENGTH": 2,
+  "FP_IO_HLENGTH": 4,
+  "FP_IO_VLENGTH": 4,
 
   "FP_PDN_VPITCH": 38.87,
   "RUN_CTS": 1,
