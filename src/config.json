@@ -21,6 +21,8 @@
   "DIE_AREA": [0, 0, 155, 95],
   "CORE_AREA": [5.52, 10.88, 149.04, 81.6],
 
+  "FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+
   "GRT_ALLOW_CONGESTION": 1,
 
   "FP_IO_HLENGTH": 2,
